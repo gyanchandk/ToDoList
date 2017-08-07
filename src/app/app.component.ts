@@ -1,22 +1,5 @@
 import { Component ,OnInit} from '@angular/core';
-
-
-class Hero{
- 
-   name :string;
-   id:number;
-   timeStamp:number;
-
-  constructor( nameN:string,idN:number,timeN:number){
-       
-        this.name = nameN;
-        this.id=idN;
-        this.timeStamp=timeN;
-       
-  }
-
-  
-}
+import {Task } from './task';
 
 
 @Component({
@@ -34,13 +17,12 @@ class Hero{
 
 export class AppComponent implements OnInit {
     title = "toDo list"
-
-    amount=2987.90;
-    t=1500552000;
-  
-     Heroes:Hero[]=[];
-     dHero:Hero[]=[];
-     heroText:string="";
+     flag=1;
+     toDoTaskCount=0;
+     completedTaskCount=0;
+     Tasks:Task[]=[];
+     dTask:Task[]=[];
+     taskText:string="";
      msg:string;
      errMsg:string;
      totalTaskToComplete:number;
@@ -49,23 +31,24 @@ export class AppComponent implements OnInit {
      alreadyAddedTask:string;
     
 
-     addHero(msg:string){
+     addTask(msg:string){
        
          if(msg.length==0){
              
              this.errMsg = "Task is not clear";
          }
-         else if(this.duplicateTask(msg)){
+         else if(this.duplicateTask(msg) && this.flag ){
               this.errMsg="Task is already in the list";
          }
              
          else{
               
               this.today=Date.now();
-              this.Heroes.push(new Hero(msg,2,this.today));
+              this.Tasks.push(new Task(msg,this.toDoTaskCount,this.today));
               this.errMsg="";
-              this.heroText="";
-              this.totalTaskToComplete=this.Heroes.length;
+              this.taskText="";
+              this.totalTaskToComplete=this.Tasks.length;
+              this.toDoTaskCount+=1;
          }    
            
         
@@ -73,9 +56,9 @@ export class AppComponent implements OnInit {
 
      duplicateTask(msg:string):number{
 
-          for(var i=0;i<this.Heroes.length;i++)
+          for(var i=0;i<this.Tasks.length;i++)
           {
-             if( msg==this.Heroes[i].name)
+             if( msg==this.Tasks[i].name)
              {
                 return 1;
              }
@@ -85,71 +68,73 @@ export class AppComponent implements OnInit {
           return 0;
      }
      
-     markAsComplete(hero:Hero){
+     markAsComplete(task:Task){
            
-           this.addDHero(hero);
-           this.deleteHero(hero);
+           this.addDTask(task);
+           this.deleteTask(task);
            
 
      }
 
 
 
-     editHero(hero:Hero){
-       this.heroText=hero.name;
-       this.deleteHero(hero);
-       this.totalTaskToComplete=this.Heroes.length;
+     editTask(task:Task){
+       this.taskText=task.name;
+       this.deleteTask(task);
+       this.totalTaskToComplete=this.Tasks.length;
      }
      
 
-     deleteHero(hero:Hero){
+     deleteTask(task:Task){
        
-        this.Heroes = this.Heroes.filter(Heroes => Heroes.name !== hero.name);
-         this.totalTaskToComplete=this.Heroes.length;
+        this.Tasks = this.Tasks.filter(Tasks => Tasks.id !== task.id);
+         this.totalTaskToComplete=this.Tasks.length;
+        
      }
     
     reset(){
-      this.heroText="";
+      this.taskText="";
     }
 
     dismiss(){
       this.errMsg="";
-      this.heroText="";
+      this.taskText="";
     }
 
     addAnyWay(msg:string){
           if(msg.length==0){
             msg="Nothing to do";
           }
-          while(this.duplicateTask(msg)){
-              msg=msg+".";
-          }
-          this.addHero(msg);
+          
+          this.flag=0;
+          this.addTask(msg);
 
-          this.heroText="";
+          this.taskText="";
     }
 
-    addDHero(hero:Hero){
+    addDTask(task:Task){
        
-       this.dHero.push(new Hero(hero.name,2,Date.now()));
-       this.msg=hero.name;
-       this.completedTask=this.dHero.length;
+       this.dTask.push(new Task(task.name,this.completedTaskCount,Date.now()));
+       this.msg=task.name;
+       this.completedTask=this.dTask.length;
+       this.completedTaskCount+=1;
      }
 
-    deleteDHero(hero:Hero){
+    deleteDTask(task:Task){
        
-        this.dHero = this.dHero.filter(dHero => dHero.name !== hero.name);
-        this.completedTask=this.dHero.length;
+        this.dTask = this.dTask.filter(dTask => dTask.id !== task.id);
+        this.completedTask=this.dTask.length;
+       
      }
 
    
     ngOnInit(){
       
      
-      this.addHero("Buy daily items from new-market");
-      this.addHero("Registration for current semester");
+      this.addTask("Buy daily items from new-market");
+      this.addTask("Registration for current semester");
 
-      this.addDHero(new Hero("this is completed task",2,Date.now()));
+      this.addDTask(new Task("this is completed task",this.completedTaskCount,Date.now()));
 
     }
     

@@ -4,10 +4,10 @@
               <h1 id="title">{{title}}</h1>
 
             <div class="input-group" >
-                <input id="inputTask" #spy name="task" placeHolder="Add new task..." (keyup.enter)="addHero(heroText)" [(ngModel)]="heroText" class="form-control" required/>
+                <input id="inputTask" #spy name="task" placeHolder="Add new task..." (keyup.enter)="addTask(taskText)" [(ngModel)]="taskText" class="form-control" required/>
                   
                 <span class="input-group-addon">
-                 <button (click)="addHero(heroText)"  class="btn btn-md  btn-primary" > <span  class="glyphicon glyphicon-plus" aria-hidden="true" alt="Add"></span></button>
+                 <button (click)="addTask(taskText)"  class="btn btn-md  btn-primary" > <span  class="glyphicon glyphicon-plus" aria-hidden="true" alt="Add"></span></button>
                   <button (click)="reset()" class="btn btn-md btn-primary">clear</button>
                  
                 </span>
@@ -17,26 +17,26 @@
                    <p id="errMessage"><strong>oh Sorry ! </strong>{{errMsg}}
                       <span id="errButton">
                            <button class="btn btn-default btn-xs" (click)="dismiss()" >Dismiss</button>
-                           <button class="btn btn-info btn-xs" (click)="addAnyWay(heroText)" >Add anyway</button>
+                           <button class="btn btn-info btn-xs" (click)="addAnyWay(taskText)" >Add anyway</button>
                       </span>
                    </p>
                    
             </div>
            
              
-              <div *ngIf="Heroes">
+              <div *ngIf="Tasks">
                  <h4  id="ttcTitle" >Task-to-do  <span class="badge "  style="background-color:rgb(51, 102, 153)">{{totalTaskToComplete}}</span></h4><hr />
                      <ul class="list-group">
                         
-                         <li  *ngFor="let hero of Heroes" class="list-group-item taskToComplete"> 
-                             <span class="dateTime">{{hero.timeStamp |date}} {{hero.timeStamp| date:'jm'}}</span> 
+                         <li  *ngFor="let task of Tasks" class="list-group-item taskToComplete"> 
+                             <span class="dateTime">{{task.timeStamp |date}} {{task.timeStamp| date:'jm'}}</span> 
                            
                             <span class="list-group-addon ctrlButtons " >
-                                <button (click)="markAsComplete(hero)" class="btn btn-xs btn-success">completed</button>
-                                <button (click)="editHero(hero)" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                <button (click)="deleteHero(hero)" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                <button (click)="markAsComplete(task)" class="btn btn-xs btn-success">completed</button>
+                                <button (click)="editTask(task)" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button (click)="deleteTask(task)" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                             </span><br />
-                            {{hero.name}}
+                            {{task.name}}
                          </li>  
                      </ul>
               </div>  
@@ -46,16 +46,16 @@
 
              
 
-              <div *ngIf="dHero">
+              <div *ngIf="dTask">
                 <h4 style="color:rgb(0, 153, 153)">Completed-task  <span class="badge"  style="background-color:rgb(0, 153, 153)">{{completedTask}}</span></h4><hr/>
                 <ul class="list-group">
-                  <li  *ngFor="let hero of dHero" class="list-group-item colmpletedTask"> 
-                     <span class="dateTime">Completed on:{{hero.timeStamp |date}} {{hero.timeStamp| date:'jm'}}</span>
+                  <li  *ngFor="let task of dTask" class="list-group-item colmpletedTask"> 
+                     <span class="dateTime">Completed on:{{task.timeStamp |date}} {{task.timeStamp| date:'jm'}}</span>
                    
                      <span class="list-group-addon" style="float:right">
-                       <button (click)="deleteDHero(hero)" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                       <button (click)="deleteDTask(task)" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
                      </span><br />
-                      {{hero.name}}
+                      {{task.name}}
                    
                   </li>
                 </ul>
